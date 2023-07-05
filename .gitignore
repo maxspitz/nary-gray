@@ -302,6 +302,7 @@ TSWLatexianTemp*
 
 # Isabelle
 *.thy~
+ROOT~
 
 # Packages #
 ############
