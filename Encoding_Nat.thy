@@ -115,7 +115,7 @@ proof (rule inj_onI)
   fix u v :: word
   assume 1: "val b u = val b v"
   assume "u \<in> {w. valid b w \<and> normal b w}"
-    and "v \<in> {w. valid b w \<and> normal b w}"
+     and "v \<in> {w. valid b w \<and> normal b w}"
   hence "valid b u \<and> normal b u \<and> valid b v \<and> normal b v" by blast
   with "1" show "u = v" using normal_eq by blast
 qed
@@ -141,13 +141,33 @@ next
   qed
 qed
 
+lemma range_lenc:
+  "2\<le>b \<Longrightarrow> lenc k b ` {..<b ^ k} = {w. valid b w \<and> length w = k}"
+proof
+  show "2 \<le> b \<Longrightarrow> lenc k b ` {..<b ^ k} \<subseteq> {w. valid b w \<and> length w = k}"
+    by (simp add: image_subsetI length_lenc valid_lenc)
+next
+  assume "2\<le>b"
+  show "{w. valid b w \<and> length w = k} \<subseteq> lenc k b ` {..<b ^ k}"
+  proof
+    fix v :: word
+    let ?v = "val b v"
+    assume "v \<in> {w. valid b w \<and> length w = k}"
+    hence 1: "valid b v \<and> length v = k" by blast
+    hence "?v < b^k" using val_bound by blast
+    hence "?v \<in> {..<b^k}" by blast
+    from "1" have "lenc k b ?v = v" using val_correct by blast
+    thus "v \<in> lenc k b ` {..<b ^ k}" by (metis \<open>?v \<in> {..<b^k}\<close> image_eqI)
+  qed
+qed
+
 theorem enc_correct:
   "2\<le>b \<Longrightarrow> bij_betw (enc b) UNIV {w. valid b w \<and> normal b w}"
-  by (simp add: bij_betw_imageI inj_enc range_enc)
+  by (simp add: bij_betw_def inj_enc range_enc)
 
 theorem lenc_correct:
   "2\<le>b \<Longrightarrow> bij_betw (lenc k b) {..<b^k} {w. valid b w \<and> length w = k}"
-  sorry
+  by (simp add: bij_betw_def inj_lenc range_lenc)
 
 
 section \<open>Circular Increment Operation\<close>
@@ -156,12 +176,12 @@ fun inc :: "nat \<Rightarrow> word \<Rightarrow> word" where
   "inc _ [] = []"
 | "inc b (a#w) = Suc a mod b#(if Suc a \<noteq> b then w else inc b w)"
 
-lemma valid_inc:
-  "valid b w \<Longrightarrow> valid b (inc b w)"
+lemma length_inc:
+  "length (inc b w) = length w"
   by (induction w) auto
 
-lemma length_inc_inv:
-  "length (inc b w) = length w"
+lemma valid_inc:
+  "valid b w \<Longrightarrow> valid b (inc b w)"
   by (induction w) auto
 
 lemma val_inc:
@@ -185,11 +205,19 @@ next
     assume 2: "Suc a \<noteq> b"
     with Cons.prems have "valid b (inc b (a#w))" by simp
     hence "val b (inc b (a#w)) < b^length(inc b (a#w))" using val_bound by blast
-    hence "val b (inc b (a#w)) < b^length(a#w)" using length_inc_inv by metis
+    hence "val b (inc b (a#w)) < b^length(a#w)" using length_inc by metis
     hence "?v < b^length(a#w)" using "2" Cons.prems by simp
     hence "?v = ?v mod b^length(a#w)" by simp
     thus ?thesis using "2" Cons.prems by auto
   qed
 qed
+
+lemma inc_correct:
+  "inc b (lenc k b n) = lenc k b (Suc n)"
+  apply (induction k arbitrary: n)
+  by (auto simp add: div_Suc mod_Suc)
+
+lemma inc_not_eq: "valid b w \<Longrightarrow> (inc b w = w) = (w = [])"
+  by (induction w) auto
 
 end
