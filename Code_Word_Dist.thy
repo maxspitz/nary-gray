@@ -2,23 +2,47 @@
   Author: Maximilian Spitz
 *)
 
-theory Code_Word_Dist imports Encoding_Nat begin
+
+section \<open>A Generalized Distance Measure\<close>
+
+theory Code_Word_Dist
+  imports Encoding_Nat
+begin
+
+text \<open>
+In the case of the reflected binary code (RBC) it is sufficient
+  to use the Hamming distance to express the property, because there are
+  only two distinct digits so that a bitflip naturally always corresponds
+  to a distance of 1.
+\<close>
 
 
-section \<open>Distance for Digits\<close>
+subsection \<open>Distance of Digits\<close>
 
+text \<open>
+We can interpret a bitflip as an increment modulo 2, which is why for the
+  distance of digits it appears as a natural generalization to choose the
+  amount of required increments.
+Mathematically, the distance $d(x,y)$ should be $y-x$ (mod $b$).
+For example we have $d(0,1) = d(1,0) = 1$ in the binary numeral system.
+\<close>
 
-(* dist1 b x y ~ y-x in the additive group of the factor ring \<int> modulo (b) *)
-definition dist1 :: "BASE \<Rightarrow> nat \<Rightarrow> nat \<Rightarrow> nat" where
+definition dist1 :: "base \<Rightarrow> nat \<Rightarrow> nat \<Rightarrow> nat" where
   "dist1 b x y \<equiv> if x\<le>y then y-x else b+y-x"
 
-lemma dist1_0:
-  "dist1 b x x = 0"
-  by (auto simp add: dist1_def)
+text \<open>
+Note that the distance of digits is in general asymmetric, so that it is
+  in paticular not a metric. However, this is not an issue and in fact the
+  most appropriate generalization, partly due to the next lemma:
+\<close>
 
 lemma dist1_eq:
   "\<lbrakk>x < b; y < b; dist1 b x y = 0\<rbrakk> \<Longrightarrow> x = y"
   by (auto simp add: dist1_def split: if_splits)
+
+lemma dist1_0:
+  "dist1 b x x = 0"
+  by (auto simp add: dist1_def)
 
 lemma dist1_ge1:
   "\<lbrakk>x < b; y < b; x\<noteq>y\<rbrakk> \<Longrightarrow> dist1 b x y \<ge> 1"
@@ -28,7 +52,6 @@ lemma dist1_elim_1:
   "\<lbrakk>x < b; y < b\<rbrakk> \<Longrightarrow> (dist1 b x y + x) mod b = y"
   by (auto simp add: dist1_def)
 
-(* y instead of y mod b*)
 lemma dist1_elim_2:
   "\<lbrakk>x < b; y < b\<rbrakk> \<Longrightarrow> dist1 b x (x+y) = y"
   by (auto simp add: dist1_def)
@@ -49,7 +72,7 @@ lemma dist1_valid:
   "\<lbrakk>x < b; y < b\<rbrakk> \<Longrightarrow> dist1 b x y < b"
   by (auto simp add: dist1_def)
 
-(* TODO: Emin fragen: linarith_split_limit exceeded *)
+(* linarith_split_limit exceeded *)
 lemma dist1_distr:
   "\<lbrakk>x < b; y < b; z < b\<rbrakk> \<Longrightarrow> dist1 b (dist1 b x y) (dist1 b x z) = dist1 b y z"
   by (auto simp add: dist1_def)
@@ -59,14 +82,26 @@ lemma dist1_distr2:
   by (auto simp add: dist1_def)
 
 
-section \<open>(Hamming-)Distance for Words\<close>
+subsection \<open>(Hamming-) Distance between Words\<close>
 
+text \<open>
+The total distance between two words of equal length is then defined as
+  the sum of component-wise distances.
+Note that the Hamming distance is equivalent to this definition for $b=2$
+  and is in general a lower bound.
+\<close>
 
 fun hamming :: "word \<Rightarrow> word \<Rightarrow> nat" where
   "hamming [] [] = 0"
 | "hamming (a#v) (b#w) = (if a\<noteq>b then 1 else 0) + hamming v w"
 
-fun dist :: "BASE \<Rightarrow> word \<Rightarrow> word \<Rightarrow> nat" where
+text \<open>
+The Hamming distance is only defined in the case of equal word length.
+In the following definition we assume leading zeroes if the word length
+  is not equal:
+\<close>
+
+fun dist :: "base \<Rightarrow> word \<Rightarrow> word \<Rightarrow> nat" where
   "dist _ [] [] = 0"
 | "dist b (x#xs) [] = dist1 b x 0 + dist b xs []"
 | "dist b [] (y#ys) = dist1 b 0 y + dist b [] ys"

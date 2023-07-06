@@ -1,0 +1,654 @@
+%
+\begin{isabellebody}%
+\setisabellecontext{Code{\isacharunderscore}{\kern0pt}Word{\isacharunderscore}{\kern0pt}Dist}%
+%
+\isadelimdocument
+%
+\endisadelimdocument
+%
+\isatagdocument
+%
+\isamarkupsection{A Generalized Distance Measure%
+}
+\isamarkuptrue%
+%
+\endisatagdocument
+{\isafolddocument}%
+%
+\isadelimdocument
+%
+\endisadelimdocument
+%
+\isadelimtheory
+%
+\endisadelimtheory
+%
+\isatagtheory
+\isacommand{theory}\isamarkupfalse%
+\ Code{\isacharunderscore}{\kern0pt}Word{\isacharunderscore}{\kern0pt}Dist\isanewline
+\ \ \isakeyword{imports}\ Encoding{\isacharunderscore}{\kern0pt}Nat\isanewline
+\isakeyword{begin}%
+\endisatagtheory
+{\isafoldtheory}%
+%
+\isadelimtheory
+%
+\endisadelimtheory
+%
+\begin{isamarkuptext}%
+In the case of the reflected binary code (RBC) it is sufficient
+  to use the Hamming distance to express the property, because there are
+  only two distinct digits so that a bitflip naturally always corresponds
+  to a distance of 1.%
+\end{isamarkuptext}\isamarkuptrue%
+%
+\isadelimdocument
+%
+\endisadelimdocument
+%
+\isatagdocument
+%
+\isamarkupsubsection{Distance of Digits%
+}
+\isamarkuptrue%
+%
+\endisatagdocument
+{\isafolddocument}%
+%
+\isadelimdocument
+%
+\endisadelimdocument
+%
+\begin{isamarkuptext}%
+We can interpret a bitflip as an increment modulo 2, which is why for the
+  distance of digits it appears as a natural generalization to choose the
+  amount of required increments.
+Mathematically, the distance $d(x,y)$ should be $y-x$ (mod $b$).
+For example we have $d(0,1) = d(1,0) = 1$ in the binary numeral system.%
+\end{isamarkuptext}\isamarkuptrue%
+\isacommand{definition}\isamarkupfalse%
+\ dist{\isadigit{1}}\ {\isacharcolon}{\kern0pt}{\isacharcolon}{\kern0pt}\ {\isachardoublequoteopen}base\ {\isasymRightarrow}\ nat\ {\isasymRightarrow}\ nat\ {\isasymRightarrow}\ nat{\isachardoublequoteclose}\ \isakeyword{where}\isanewline
+\ \ {\isachardoublequoteopen}dist{\isadigit{1}}\ b\ x\ y\ {\isasymequiv}\ if\ x{\isasymle}y\ then\ y{\isacharminus}{\kern0pt}x\ else\ b{\isacharplus}{\kern0pt}y{\isacharminus}{\kern0pt}x{\isachardoublequoteclose}%
+\begin{isamarkuptext}%
+Note that the distance of digits is in general asymmetric, so that it is
+  in paticular not a metric. However, this is not an issue and in fact the
+  most appropriate generalization, partly due to the next lemma:%
+\end{isamarkuptext}\isamarkuptrue%
+\isacommand{lemma}\isamarkupfalse%
+\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}eq{\isacharcolon}{\kern0pt}\isanewline
+\ \ {\isachardoublequoteopen}{\isasymlbrakk}x\ {\isacharless}{\kern0pt}\ b{\isacharsemicolon}{\kern0pt}\ y\ {\isacharless}{\kern0pt}\ b{\isacharsemicolon}{\kern0pt}\ dist{\isadigit{1}}\ b\ x\ y\ {\isacharequal}{\kern0pt}\ {\isadigit{0}}{\isasymrbrakk}\ {\isasymLongrightarrow}\ x\ {\isacharequal}{\kern0pt}\ y{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}{\kern0pt}auto\ simp\ add{\isacharcolon}{\kern0pt}\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}def\ split{\isacharcolon}{\kern0pt}\ if{\isacharunderscore}{\kern0pt}splits{\isacharparenright}{\kern0pt}%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}{\isadigit{0}}{\isacharcolon}{\kern0pt}\isanewline
+\ \ {\isachardoublequoteopen}dist{\isadigit{1}}\ b\ x\ x\ {\isacharequal}{\kern0pt}\ {\isadigit{0}}{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}{\kern0pt}auto\ simp\ add{\isacharcolon}{\kern0pt}\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}def{\isacharparenright}{\kern0pt}%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}ge{\isadigit{1}}{\isacharcolon}{\kern0pt}\isanewline
+\ \ {\isachardoublequoteopen}{\isasymlbrakk}x\ {\isacharless}{\kern0pt}\ b{\isacharsemicolon}{\kern0pt}\ y\ {\isacharless}{\kern0pt}\ b{\isacharsemicolon}{\kern0pt}\ x{\isasymnoteq}y{\isasymrbrakk}\ {\isasymLongrightarrow}\ dist{\isadigit{1}}\ b\ x\ y\ {\isasymge}\ {\isadigit{1}}{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{using}\isamarkupfalse%
+\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}eq\ \isacommand{by}\isamarkupfalse%
+\ fastforce%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}elim{\isacharunderscore}{\kern0pt}{\isadigit{1}}{\isacharcolon}{\kern0pt}\isanewline
+\ \ {\isachardoublequoteopen}{\isasymlbrakk}x\ {\isacharless}{\kern0pt}\ b{\isacharsemicolon}{\kern0pt}\ y\ {\isacharless}{\kern0pt}\ b{\isasymrbrakk}\ {\isasymLongrightarrow}\ {\isacharparenleft}{\kern0pt}dist{\isadigit{1}}\ b\ x\ y\ {\isacharplus}{\kern0pt}\ x{\isacharparenright}{\kern0pt}\ mod\ b\ {\isacharequal}{\kern0pt}\ y{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}{\kern0pt}auto\ simp\ add{\isacharcolon}{\kern0pt}\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}def{\isacharparenright}{\kern0pt}%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}elim{\isacharunderscore}{\kern0pt}{\isadigit{2}}{\isacharcolon}{\kern0pt}\isanewline
+\ \ {\isachardoublequoteopen}{\isasymlbrakk}x\ {\isacharless}{\kern0pt}\ b{\isacharsemicolon}{\kern0pt}\ y\ {\isacharless}{\kern0pt}\ b{\isasymrbrakk}\ {\isasymLongrightarrow}\ dist{\isadigit{1}}\ b\ x\ {\isacharparenleft}{\kern0pt}x{\isacharplus}{\kern0pt}y{\isacharparenright}{\kern0pt}\ {\isacharequal}{\kern0pt}\ y{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}{\kern0pt}auto\ simp\ add{\isacharcolon}{\kern0pt}\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}def{\isacharparenright}{\kern0pt}%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}mod{\isacharunderscore}{\kern0pt}Suc{\isacharcolon}{\kern0pt}\isanewline
+\ \ {\isachardoublequoteopen}{\isasymlbrakk}x\ {\isacharless}{\kern0pt}\ b{\isacharsemicolon}{\kern0pt}\ y\ {\isacharless}{\kern0pt}\ b{\isasymrbrakk}\ {\isasymLongrightarrow}\ dist{\isadigit{1}}\ b\ x\ {\isacharparenleft}{\kern0pt}Suc\ y\ mod\ b{\isacharparenright}{\kern0pt}\ {\isacharequal}{\kern0pt}\ Suc\ {\isacharparenleft}{\kern0pt}dist{\isadigit{1}}\ b\ x\ y{\isacharparenright}{\kern0pt}\ mod\ b{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}{\kern0pt}auto\ simp\ add{\isacharcolon}{\kern0pt}\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}def\ mod{\isacharunderscore}{\kern0pt}Suc{\isacharparenright}{\kern0pt}%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}Suc{\isacharcolon}{\kern0pt}\isanewline
+\ \ {\isachardoublequoteopen}{\isasymlbrakk}{\isadigit{2}}\ {\isasymle}\ b{\isacharsemicolon}{\kern0pt}\ x\ {\isacharless}{\kern0pt}\ b{\isasymrbrakk}\ {\isasymLongrightarrow}\ dist{\isadigit{1}}\ b\ x\ {\isacharparenleft}{\kern0pt}Suc\ x\ mod\ b{\isacharparenright}{\kern0pt}\ {\isacharequal}{\kern0pt}\ {\isadigit{1}}{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}{\kern0pt}simp\ add{\isacharcolon}{\kern0pt}\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}{\isadigit{0}}\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}mod{\isacharunderscore}{\kern0pt}Suc{\isacharparenright}{\kern0pt}%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}asym{\isacharcolon}{\kern0pt}\isanewline
+\ \ {\isachardoublequoteopen}{\isasymlbrakk}x\ {\isacharless}{\kern0pt}\ b{\isacharsemicolon}{\kern0pt}\ y\ {\isacharless}{\kern0pt}\ b{\isasymrbrakk}\ {\isasymLongrightarrow}\ {\isacharparenleft}{\kern0pt}dist{\isadigit{1}}\ b\ x\ y\ {\isacharplus}{\kern0pt}\ dist{\isadigit{1}}\ b\ y\ x{\isacharparenright}{\kern0pt}\ mod\ b\ {\isacharequal}{\kern0pt}\ {\isadigit{0}}{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}{\kern0pt}auto\ simp\ add{\isacharcolon}{\kern0pt}\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}def{\isacharparenright}{\kern0pt}%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}valid{\isacharcolon}{\kern0pt}\isanewline
+\ \ {\isachardoublequoteopen}{\isasymlbrakk}x\ {\isacharless}{\kern0pt}\ b{\isacharsemicolon}{\kern0pt}\ y\ {\isacharless}{\kern0pt}\ b{\isasymrbrakk}\ {\isasymLongrightarrow}\ dist{\isadigit{1}}\ b\ x\ y\ {\isacharless}{\kern0pt}\ b{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}{\kern0pt}auto\ simp\ add{\isacharcolon}{\kern0pt}\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}def{\isacharparenright}{\kern0pt}%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}distr{\isacharcolon}{\kern0pt}\isanewline
+\ \ {\isachardoublequoteopen}{\isasymlbrakk}x\ {\isacharless}{\kern0pt}\ b{\isacharsemicolon}{\kern0pt}\ y\ {\isacharless}{\kern0pt}\ b{\isacharsemicolon}{\kern0pt}\ z\ {\isacharless}{\kern0pt}\ b{\isasymrbrakk}\ {\isasymLongrightarrow}\ dist{\isadigit{1}}\ b\ {\isacharparenleft}{\kern0pt}dist{\isadigit{1}}\ b\ x\ y{\isacharparenright}{\kern0pt}\ {\isacharparenleft}{\kern0pt}dist{\isadigit{1}}\ b\ x\ z{\isacharparenright}{\kern0pt}\ {\isacharequal}{\kern0pt}\ dist{\isadigit{1}}\ b\ y\ z{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}{\kern0pt}auto\ simp\ add{\isacharcolon}{\kern0pt}\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}def{\isacharparenright}{\kern0pt}%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}distr{\isadigit{2}}{\isacharcolon}{\kern0pt}\isanewline
+\ \ {\isachardoublequoteopen}{\isasymlbrakk}x\ {\isacharless}{\kern0pt}\ b{\isacharsemicolon}{\kern0pt}\ y\ {\isacharless}{\kern0pt}\ b{\isacharsemicolon}{\kern0pt}\ z\ {\isacharless}{\kern0pt}\ b{\isasymrbrakk}\ {\isasymLongrightarrow}\ dist{\isadigit{1}}\ b\ {\isacharparenleft}{\kern0pt}dist{\isadigit{1}}\ b\ x\ z{\isacharparenright}{\kern0pt}\ {\isacharparenleft}{\kern0pt}dist{\isadigit{1}}\ b\ y\ z{\isacharparenright}{\kern0pt}\ {\isacharequal}{\kern0pt}\ dist{\isadigit{1}}\ b\ y\ x{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}{\kern0pt}auto\ simp\ add{\isacharcolon}{\kern0pt}\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}def{\isacharparenright}{\kern0pt}%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+%
+\endisadelimproof
+%
+\isadelimdocument
+%
+\endisadelimdocument
+%
+\isatagdocument
+%
+\isamarkupsubsection{(Hamming-) Distance between Words%
+}
+\isamarkuptrue%
+%
+\endisatagdocument
+{\isafolddocument}%
+%
+\isadelimdocument
+%
+\endisadelimdocument
+%
+\begin{isamarkuptext}%
+The total distance between two words of equal length is then defined as
+  the sum of component-wise distances.
+Note that the Hamming distance is equivalent to this definition for $b=2$
+  and is in general a lower bound.%
+\end{isamarkuptext}\isamarkuptrue%
+\isacommand{fun}\isamarkupfalse%
+\ hamming\ {\isacharcolon}{\kern0pt}{\isacharcolon}{\kern0pt}\ {\isachardoublequoteopen}word\ {\isasymRightarrow}\ word\ {\isasymRightarrow}\ nat{\isachardoublequoteclose}\ \isakeyword{where}\isanewline
+\ \ {\isachardoublequoteopen}hamming\ {\isacharbrackleft}{\kern0pt}{\isacharbrackright}{\kern0pt}\ {\isacharbrackleft}{\kern0pt}{\isacharbrackright}{\kern0pt}\ {\isacharequal}{\kern0pt}\ {\isadigit{0}}{\isachardoublequoteclose}\isanewline
+{\isacharbar}{\kern0pt}\ {\isachardoublequoteopen}hamming\ {\isacharparenleft}{\kern0pt}a{\isacharhash}{\kern0pt}v{\isacharparenright}{\kern0pt}\ {\isacharparenleft}{\kern0pt}b{\isacharhash}{\kern0pt}w{\isacharparenright}{\kern0pt}\ {\isacharequal}{\kern0pt}\ {\isacharparenleft}{\kern0pt}if\ a{\isasymnoteq}b\ then\ {\isadigit{1}}\ else\ {\isadigit{0}}{\isacharparenright}{\kern0pt}\ {\isacharplus}{\kern0pt}\ hamming\ v\ w{\isachardoublequoteclose}%
+\begin{isamarkuptext}%
+The Hamming distance is only defined in the case of equal word length.
+In the following definition we assume leading zeroes if the word length
+  is not equal:%
+\end{isamarkuptext}\isamarkuptrue%
+\isacommand{fun}\isamarkupfalse%
+\ dist\ {\isacharcolon}{\kern0pt}{\isacharcolon}{\kern0pt}\ {\isachardoublequoteopen}base\ {\isasymRightarrow}\ word\ {\isasymRightarrow}\ word\ {\isasymRightarrow}\ nat{\isachardoublequoteclose}\ \isakeyword{where}\isanewline
+\ \ {\isachardoublequoteopen}dist\ {\isacharunderscore}{\kern0pt}\ {\isacharbrackleft}{\kern0pt}{\isacharbrackright}{\kern0pt}\ {\isacharbrackleft}{\kern0pt}{\isacharbrackright}{\kern0pt}\ {\isacharequal}{\kern0pt}\ {\isadigit{0}}{\isachardoublequoteclose}\isanewline
+{\isacharbar}{\kern0pt}\ {\isachardoublequoteopen}dist\ b\ {\isacharparenleft}{\kern0pt}x{\isacharhash}{\kern0pt}xs{\isacharparenright}{\kern0pt}\ {\isacharbrackleft}{\kern0pt}{\isacharbrackright}{\kern0pt}\ {\isacharequal}{\kern0pt}\ dist{\isadigit{1}}\ b\ x\ {\isadigit{0}}\ {\isacharplus}{\kern0pt}\ dist\ b\ xs\ {\isacharbrackleft}{\kern0pt}{\isacharbrackright}{\kern0pt}{\isachardoublequoteclose}\isanewline
+{\isacharbar}{\kern0pt}\ {\isachardoublequoteopen}dist\ b\ {\isacharbrackleft}{\kern0pt}{\isacharbrackright}{\kern0pt}\ {\isacharparenleft}{\kern0pt}y{\isacharhash}{\kern0pt}ys{\isacharparenright}{\kern0pt}\ {\isacharequal}{\kern0pt}\ dist{\isadigit{1}}\ b\ {\isadigit{0}}\ y\ {\isacharplus}{\kern0pt}\ dist\ b\ {\isacharbrackleft}{\kern0pt}{\isacharbrackright}{\kern0pt}\ ys{\isachardoublequoteclose}\isanewline
+{\isacharbar}{\kern0pt}\ {\isachardoublequoteopen}dist\ b\ {\isacharparenleft}{\kern0pt}x{\isacharhash}{\kern0pt}xs{\isacharparenright}{\kern0pt}\ {\isacharparenleft}{\kern0pt}y{\isacharhash}{\kern0pt}ys{\isacharparenright}{\kern0pt}\ {\isacharequal}{\kern0pt}\ dist{\isadigit{1}}\ b\ x\ y\ {\isacharplus}{\kern0pt}\ dist\ b\ xs\ ys{\isachardoublequoteclose}\isanewline
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ dist{\isacharunderscore}{\kern0pt}{\isadigit{0}}{\isacharcolon}{\kern0pt}\isanewline
+\ \ {\isachardoublequoteopen}dist\ b\ w\ w\ {\isacharequal}{\kern0pt}\ {\isadigit{0}}{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{apply}\isamarkupfalse%
+\ {\isacharparenleft}{\kern0pt}induction\ w{\isacharparenright}{\kern0pt}\isanewline
+\ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}{\kern0pt}auto\ simp\ add{\isacharcolon}{\kern0pt}\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}{\isadigit{0}}{\isacharparenright}{\kern0pt}%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ dist{\isacharunderscore}{\kern0pt}eq{\isacharcolon}{\kern0pt}\isanewline
+\ \ {\isachardoublequoteopen}{\isasymlbrakk}valid\ b\ v{\isacharsemicolon}{\kern0pt}\ valid\ b\ w{\isacharsemicolon}{\kern0pt}\ length\ v{\isacharequal}{\kern0pt}length\ w{\isacharsemicolon}{\kern0pt}\ dist\ b\ v\ w\ {\isacharequal}{\kern0pt}\ {\isadigit{0}}{\isasymrbrakk}\ {\isasymLongrightarrow}\ v\ {\isacharequal}{\kern0pt}\ w{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{apply}\isamarkupfalse%
+\ {\isacharparenleft}{\kern0pt}induction\ b\ v\ w\ rule{\isacharcolon}{\kern0pt}\ dist{\isachardot}{\kern0pt}induct{\isacharparenright}{\kern0pt}\isanewline
+\ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}{\kern0pt}auto\ simp\ add{\isacharcolon}{\kern0pt}\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}eq{\isacharparenright}{\kern0pt}%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ dist{\isacharunderscore}{\kern0pt}posd{\isacharcolon}{\kern0pt}\isanewline
+\ \ {\isachardoublequoteopen}{\isasymlbrakk}valid\ b\ v{\isacharsemicolon}{\kern0pt}\ valid\ b\ w{\isacharsemicolon}{\kern0pt}\ length\ v{\isacharequal}{\kern0pt}length\ w{\isasymrbrakk}\ {\isasymLongrightarrow}\ {\isacharparenleft}{\kern0pt}dist\ b\ v\ w\ {\isacharequal}{\kern0pt}\ {\isadigit{0}}{\isacharparenright}{\kern0pt}\ {\isacharequal}{\kern0pt}\ {\isacharparenleft}{\kern0pt}v\ {\isacharequal}{\kern0pt}\ w{\isacharparenright}{\kern0pt}{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{using}\isamarkupfalse%
+\ dist{\isacharunderscore}{\kern0pt}{\isadigit{0}}\ dist{\isacharunderscore}{\kern0pt}eq\ \isacommand{by}\isamarkupfalse%
+\ auto%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ hamming{\isacharunderscore}{\kern0pt}posd{\isacharcolon}{\kern0pt}\isanewline
+\ \ {\isachardoublequoteopen}length\ v{\isacharequal}{\kern0pt}length\ w\ {\isasymLongrightarrow}\ {\isacharparenleft}{\kern0pt}hamming\ v\ w\ {\isacharequal}{\kern0pt}\ {\isadigit{0}}{\isacharparenright}{\kern0pt}\ {\isacharequal}{\kern0pt}\ {\isacharparenleft}{\kern0pt}v\ {\isacharequal}{\kern0pt}\ w{\isacharparenright}{\kern0pt}{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}{\kern0pt}induction\ v\ w\ rule{\isacharcolon}{\kern0pt}\ hamming{\isachardot}{\kern0pt}induct{\isacharparenright}{\kern0pt}\ auto%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ hamming{\isacharunderscore}{\kern0pt}symm{\isacharcolon}{\kern0pt}\isanewline
+\ \ {\isachardoublequoteopen}length\ v{\isacharequal}{\kern0pt}length\ w\ {\isasymLongrightarrow}\ hamming\ v\ w\ {\isacharequal}{\kern0pt}\ hamming\ w\ v{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}{\kern0pt}induction\ v\ w\ rule{\isacharcolon}{\kern0pt}\ hamming{\isachardot}{\kern0pt}induct{\isacharparenright}{\kern0pt}\ auto%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{theorem}\isamarkupfalse%
+\ hamming{\isacharunderscore}{\kern0pt}dist{\isacharcolon}{\kern0pt}\isanewline
+\ \ {\isachardoublequoteopen}{\isasymlbrakk}valid\ b\ v{\isacharsemicolon}{\kern0pt}\ valid\ b\ w{\isacharsemicolon}{\kern0pt}\ length\ v{\isacharequal}{\kern0pt}length\ w{\isasymrbrakk}\ {\isasymLongrightarrow}\ hamming\ v\ w\ {\isasymle}\ dist\ b\ v\ w{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{apply}\isamarkupfalse%
+\ {\isacharparenleft}{\kern0pt}induction\ b\ v\ w\ rule{\isacharcolon}{\kern0pt}\ dist{\isachardot}{\kern0pt}induct{\isacharparenright}{\kern0pt}\isanewline
+\ \ \ \ \ \isacommand{apply}\isamarkupfalse%
+\ auto\isanewline
+\ \ \isacommand{using}\isamarkupfalse%
+\ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}ge{\isadigit{1}}\ \isacommand{by}\isamarkupfalse%
+\ fastforce%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+%
+\isadelimtheory
+\isanewline
+%
+\endisadelimtheory
+%
+\isatagtheory
+\isacommand{end}\isamarkupfalse%
+%
+\endisatagtheory
+{\isafoldtheory}%
+%
+\isadelimtheory
+%
+\endisadelimtheory
+%
+\end{isabellebody}%
+\endinput
+%:%file=Code_Word_Dist.tex%:%
+%:%11=6%:%
+%:%27=8%:%
+%:%28=8%:%
+%:%29=9%:%
+%:%30=10%:%
+%:%39=13%:%
+%:%40=14%:%
+%:%41=15%:%
+%:%42=16%:%
+%:%51=20%:%
+%:%63=23%:%
+%:%64=24%:%
+%:%65=25%:%
+%:%66=26%:%
+%:%67=27%:%
+%:%69=30%:%
+%:%70=30%:%
+%:%71=31%:%
+%:%73=34%:%
+%:%74=35%:%
+%:%75=36%:%
+%:%77=39%:%
+%:%78=39%:%
+%:%79=40%:%
+%:%82=41%:%
+%:%86=41%:%
+%:%87=41%:%
+%:%92=41%:%
+%:%95=42%:%
+%:%96=43%:%
+%:%97=43%:%
+%:%98=44%:%
+%:%101=45%:%
+%:%105=45%:%
+%:%106=45%:%
+%:%111=45%:%
+%:%114=46%:%
+%:%115=47%:%
+%:%116=47%:%
+%:%117=48%:%
+%:%120=49%:%
+%:%124=49%:%
+%:%125=49%:%
+%:%126=49%:%
+%:%131=49%:%
+%:%134=50%:%
+%:%135=51%:%
+%:%136=51%:%
+%:%137=52%:%
+%:%140=53%:%
+%:%144=53%:%
+%:%145=53%:%
+%:%150=53%:%
+%:%153=54%:%
+%:%154=55%:%
+%:%155=55%:%
+%:%156=56%:%
+%:%159=57%:%
+%:%163=57%:%
+%:%164=57%:%
+%:%169=57%:%
+%:%172=58%:%
+%:%173=59%:%
+%:%174=59%:%
+%:%175=60%:%
+%:%178=61%:%
+%:%182=61%:%
+%:%183=61%:%
+%:%188=61%:%
+%:%191=62%:%
+%:%192=63%:%
+%:%193=63%:%
+%:%194=64%:%
+%:%197=65%:%
+%:%201=65%:%
+%:%202=65%:%
+%:%207=65%:%
+%:%210=66%:%
+%:%211=67%:%
+%:%212=67%:%
+%:%213=68%:%
+%:%216=69%:%
+%:%220=69%:%
+%:%221=69%:%
+%:%226=69%:%
+%:%229=70%:%
+%:%230=71%:%
+%:%231=71%:%
+%:%232=72%:%
+%:%235=73%:%
+%:%239=73%:%
+%:%240=73%:%
+%:%245=73%:%
+%:%248=74%:%
+%:%249=75%:%
+%:%250=76%:%
+%:%251=76%:%
+%:%252=77%:%
+%:%255=78%:%
+%:%259=78%:%
+%:%260=78%:%
+%:%265=78%:%
+%:%268=79%:%
+%:%269=80%:%
+%:%270=80%:%
+%:%271=81%:%
+%:%274=82%:%
+%:%278=82%:%
+%:%279=82%:%
+%:%293=85%:%
+%:%305=88%:%
+%:%306=89%:%
+%:%307=90%:%
+%:%308=91%:%
+%:%310=94%:%
+%:%311=94%:%
+%:%312=95%:%
+%:%313=96%:%
+%:%315=99%:%
+%:%316=100%:%
+%:%317=101%:%
+%:%319=104%:%
+%:%320=104%:%
+%:%321=105%:%
+%:%322=106%:%
+%:%323=107%:%
+%:%324=108%:%
+%:%325=109%:%
+%:%326=110%:%
+%:%327=110%:%
+%:%328=111%:%
+%:%331=112%:%
+%:%335=112%:%
+%:%336=112%:%
+%:%337=113%:%
+%:%338=113%:%
+%:%343=113%:%
+%:%346=114%:%
+%:%347=115%:%
+%:%348=115%:%
+%:%349=116%:%
+%:%352=117%:%
+%:%356=117%:%
+%:%357=117%:%
+%:%358=118%:%
+%:%359=118%:%
+%:%364=118%:%
+%:%367=119%:%
+%:%368=120%:%
+%:%369=120%:%
+%:%370=121%:%
+%:%373=122%:%
+%:%377=122%:%
+%:%378=122%:%
+%:%379=122%:%
+%:%384=122%:%
+%:%387=123%:%
+%:%388=124%:%
+%:%389=124%:%
+%:%390=125%:%
+%:%393=126%:%
+%:%397=126%:%
+%:%398=126%:%
+%:%403=126%:%
+%:%406=127%:%
+%:%407=128%:%
+%:%408=128%:%
+%:%409=129%:%
+%:%412=130%:%
+%:%416=130%:%
+%:%417=130%:%
+%:%422=130%:%
+%:%425=131%:%
+%:%426=132%:%
+%:%427=132%:%
+%:%428=133%:%
+%:%431=134%:%
+%:%435=134%:%
+%:%436=134%:%
+%:%437=135%:%
+%:%438=135%:%
+%:%439=136%:%
+%:%440=136%:%
+%:%441=136%:%
+%:%446=136%:%
+%:%451=137%:%
+%:%456=138%:%

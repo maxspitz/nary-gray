@@ -2,21 +2,35 @@
   Author: Maximilian Spitz
 *)
 
-theory Non_Boolean_Gray imports Code_Word_Dist begin
-
 
 section \<open>A non-Boolean Gray code\<close>
 
-fun to_gray :: "BASE \<Rightarrow> word \<Rightarrow> word" where
+theory Non_Boolean_Gray
+  imports Code_Word_Dist
+begin
+
+text \<open>
+The function presented below transforms a code word to gray code
+  and the corresponding decode function is exactly its inverse.
+The idea is to shift down a digit by the prefix sum of grays.
+A crucial property is the behavior of this prefix sum, stated below.
+\<close>
+
+fun to_gray :: "base \<Rightarrow> word \<Rightarrow> word" where
   "to_gray _ [] = []"
 | "to_gray b (a#v) = (let g=to_gray b v in dist1 b (sum_list g mod b) a#g)"
 
-fun decode :: "BASE \<Rightarrow> word \<Rightarrow> word" where
+fun decode :: "base \<Rightarrow> word \<Rightarrow> word" where
   "decode _ [] = []"
 | "decode b (g#c) = (g+sum_list c mod b) mod b#decode b c"
 
 
-section \<open>Correctness Proof\<close>
+subsection \<open>The Correctness Proof\<close>
+
+text \<open>
+The proof of all properties that are necessary for a gray code
+  is presented below. Also, some auxiliary lemmas are required:
+\<close>
 
 lemma length_gray:
   "length (to_gray b w) = length w"
@@ -27,6 +41,10 @@ lemma valid_gray:
   "valid b w \<Longrightarrow> valid b (to_gray b w)"
   apply (induction w)
   by (auto simp add: dist1_valid Let_def)
+
+text \<open>
+The sum of grays is congruent to the value (mod $b$):
+\<close>
 
 lemma prefix_sum:
   "valid b w \<Longrightarrow> sum_list (to_gray b w) mod b = val b w mod b"
@@ -47,6 +65,11 @@ lemma decode_correct:
   "valid b w \<Longrightarrow> decode b (to_gray b w) = w"
   apply (induction w)
   by (auto simp add: Let_def dist1_elim_1)
+
+text \<open>
+The following theorem states that the transformation to gray
+  is an encoding of the valid code words:
+\<close>
 
 theorem gray_encoding:
   "inj_on (to_gray b) {w. valid b w}"
@@ -140,6 +163,14 @@ lemmas gray_simps = decode_correct dist_posd inc_not_eq length_gray length_inc v
 lemma gray_empty:
   "valid b w \<Longrightarrow> (dist b (to_gray b w) (to_gray b (inc b w)) = 0) = (w = [])"
   by (metis gray_simps)
+
+text \<open>
+The central theorem states, that it requires exactly one increment operation
+  of one place within the word to go from the gray encoding of a number to
+  the gray encoding of its successor. Note also, that we obtain a cyclic
+  gray code in all cases, because the increment operation wraps the last
+  number around to zero.
+\<close>
 
 theorem gray_correct:
   "\<lbrakk>valid b w; w \<noteq> []\<rbrakk> \<Longrightarrow> dist b (to_gray b w) (to_gray b (inc b w)) = 1"
