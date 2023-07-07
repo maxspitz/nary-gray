@@ -1,5 +1,7 @@
-session "nary-gray" = HOL +
-  options [document = pdf, document_output = "output"]
+chapter AFP
+
+session "nary-gray" (AFP) = HOL +
+  options [timeout = 600]
   theories
     Encoding_Nat
     Code_Word_Dist
