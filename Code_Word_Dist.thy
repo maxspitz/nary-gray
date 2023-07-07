@@ -3,7 +3,7 @@
 *)
 
 
-section \<open>A Generalized Distance Measure\<close>
+section \<open>A Generalised Distance Measure\<close>
 
 theory Code_Word_Dist
   imports Encoding_Nat
@@ -12,7 +12,7 @@ begin
 text \<open>
 In the case of the reflected binary code (RBC) it is sufficient
   to use the Hamming distance to express the property, because there are
-  only two distinct digits so that a bitflip naturally always corresponds
+  only two distinct digits so that one bitflip naturally always corresponds
   to a distance of 1.
 \<close>
 
@@ -21,7 +21,7 @@ subsection \<open>Distance of Digits\<close>
 
 text \<open>
 We can interpret a bitflip as an increment modulo 2, which is why for the
-  distance of digits it appears as a natural generalization to choose the
+  distance of digits it appears as a natural generalisation to choose the
   amount of required increments.
 Mathematically, the distance $d(x,y)$ should be $y-x$ (mod $b$).
 For example we have $d(0,1) = d(1,0) = 1$ in the binary numeral system.
@@ -33,7 +33,7 @@ definition dist1 :: "base \<Rightarrow> nat \<Rightarrow> nat \<Rightarrow> nat"
 text \<open>
 Note that the distance of digits is in general asymmetric, so that it is
   in paticular not a metric. However, this is not an issue and in fact the
-  most appropriate generalization, partly due to the next lemma:
+  most appropriate generalisation, partly due to the next lemma:
 \<close>
 
 lemma dist1_eq:
@@ -97,8 +97,8 @@ fun hamming :: "word \<Rightarrow> word \<Rightarrow> nat" where
 
 text \<open>
 The Hamming distance is only defined in the case of equal word length.
-In the following definition we assume leading zeroes if the word length
-  is not equal:
+In the following definition of a distance we assume leading zeroes
+  if the word length is not equal:
 \<close>
 
 fun dist :: "base \<Rightarrow> word \<Rightarrow> word \<Rightarrow> nat" where

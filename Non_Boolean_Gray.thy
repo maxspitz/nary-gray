@@ -10,10 +10,11 @@ theory Non_Boolean_Gray
 begin
 
 text \<open>
-The function presented below transforms a code word to gray code
+The function presented below transforms a code word into a gray code
   and the corresponding decode function is exactly its inverse.
-The idea is to shift down a digit by the prefix sum of grays.
-A crucial property is the behavior of this prefix sum, stated below.
+The key idea is to shift down a digit by the prefix sum of gray digits.
+A crucial property is the behavior of this prefix sum under increment
+  as stated below.
 \<close>
 
 fun to_gray :: "base \<Rightarrow> word \<Rightarrow> word" where
@@ -167,9 +168,11 @@ lemma gray_empty:
 text \<open>
 The central theorem states, that it requires exactly one increment operation
   of one place within the word to go from the gray encoding of a number to
-  the gray encoding of its successor. Note also, that we obtain a cyclic
-  gray code in all cases, because the increment operation wraps the last
+  the gray encoding of its successor.
+Note also, that we obtain a cyclic gray code in all cases,
+  because the increment operation wraps the last
   number around to zero.
+Only the pathological case of an empty word has to be excluded.
 \<close>
 
 theorem gray_correct:

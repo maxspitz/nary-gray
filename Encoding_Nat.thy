@@ -11,16 +11,16 @@ begin
 
 text \<open>
 At first, an encoding of naturals as lists of digits with respect to
-  an arbitrary base $b \geq 2$ is introduced,
-  because the presented Gray code and its properties
-  are reasonably expressed in terms of a word representation of numbers.
+  an arbitrary base $b \geq 2$ is introduced because the presented
+  Gray code and its properties are reasonably expressed in terms of
+  a word representation of numbers.
 \<close>
 
 
 subsection \<open>Validity and Valuation\<close>
 
 text \<open>
-In the context of a given base not all possible code words are valid
+In the context of a given base, not all possible code words are valid
   number representations.
 A validity predicate is defined, that checks if a code word is valid
   and a valuation to obtain the number represented by a valid word.

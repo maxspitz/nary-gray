@@ -8,7 +8,7 @@
 %
 \isatagdocument
 %
-\isamarkupsection{A Generalized Distance Measure%
+\isamarkupsection{A Generalised Distance Measure%
 }
 \isamarkuptrue%
 %
@@ -38,7 +38,7 @@
 \begin{isamarkuptext}%
 In the case of the reflected binary code (RBC) it is sufficient
   to use the Hamming distance to express the property, because there are
-  only two distinct digits so that a bitflip naturally always corresponds
+  only two distinct digits so that one bitflip naturally always corresponds
   to a distance of 1.%
 \end{isamarkuptext}\isamarkuptrue%
 %
@@ -61,7 +61,7 @@ In the case of the reflected binary code (RBC) it is sufficient
 %
 \begin{isamarkuptext}%
 We can interpret a bitflip as an increment modulo 2, which is why for the
-  distance of digits it appears as a natural generalization to choose the
+  distance of digits it appears as a natural generalisation to choose the
   amount of required increments.
 Mathematically, the distance $d(x,y)$ should be $y-x$ (mod $b$).
 For example we have $d(0,1) = d(1,0) = 1$ in the binary numeral system.%
@@ -72,7 +72,7 @@ For example we have $d(0,1) = d(1,0) = 1$ in the binary numeral system.%
 \begin{isamarkuptext}%
 Note that the distance of digits is in general asymmetric, so that it is
   in paticular not a metric. However, this is not an issue and in fact the
-  most appropriate generalization, partly due to the next lemma:%
+  most appropriate generalisation, partly due to the next lemma:%
 \end{isamarkuptext}\isamarkuptrue%
 \isacommand{lemma}\isamarkupfalse%
 \ dist{\isadigit{1}}{\isacharunderscore}{\kern0pt}eq{\isacharcolon}{\kern0pt}\isanewline
@@ -313,8 +313,8 @@ Note that the Hamming distance is equivalent to this definition for $b=2$
 {\isacharbar}{\kern0pt}\ {\isachardoublequoteopen}hamming\ {\isacharparenleft}{\kern0pt}a{\isacharhash}{\kern0pt}v{\isacharparenright}{\kern0pt}\ {\isacharparenleft}{\kern0pt}b{\isacharhash}{\kern0pt}w{\isacharparenright}{\kern0pt}\ {\isacharequal}{\kern0pt}\ {\isacharparenleft}{\kern0pt}if\ a{\isasymnoteq}b\ then\ {\isadigit{1}}\ else\ {\isadigit{0}}{\isacharparenright}{\kern0pt}\ {\isacharplus}{\kern0pt}\ hamming\ v\ w{\isachardoublequoteclose}%
 \begin{isamarkuptext}%
 The Hamming distance is only defined in the case of equal word length.
-In the following definition we assume leading zeroes if the word length
-  is not equal:%
+In the following definition of a distance we assume leading zeroes
+  if the word length is not equal:%
 \end{isamarkuptext}\isamarkuptrue%
 \isacommand{fun}\isamarkupfalse%
 \ dist\ {\isacharcolon}{\kern0pt}{\isacharcolon}{\kern0pt}\ {\isachardoublequoteopen}base\ {\isasymRightarrow}\ word\ {\isasymRightarrow}\ word\ {\isasymRightarrow}\ nat{\isachardoublequoteclose}\ \isakeyword{where}\isanewline
